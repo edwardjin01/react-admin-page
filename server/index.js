@@ -31,8 +31,7 @@ app.get('/coins/:id', (req, res) => {
     if (error) {
       return res.send(error);
     }
-    res.set('x-total-count', response.rows.length);
-    return res.json({data: response.row.length ? response.rows[0] : {}});
+    return res.json(response.rows[0]);
   })
 })
 
@@ -51,13 +50,13 @@ app.post('/coins', (req, res) => {
 app.put('/coins/:id', (req, res) => {
   const { name, symbol } = req.body;
   const { id } = req.params;
-  const text = 'UPDATE coins set name = $1, symbol = $2 where id = $3';
+  const text = 'UPDATE coins SET name = $1, symbol = $2 WHERE id = $3 RETURNING *';
   const values = [name, symbol, id];
   client.query(text, values, (error, response) => {
     if (error) {
       return res.send(error);
     }
-    return res.json({rowCount: response.rowCount});
+    return res.json(response.rows[0]);
   })
 })
 
