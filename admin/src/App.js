@@ -13,7 +13,7 @@ const App = () => (
     {
       permissions => [
         <Resource name="coins" list={CoinList} edit={permissions === 'admin' ? CoinEdit : null} create={CoinCreate} />,
-        <Resource name='users' list={UserList}/ >
+        // <Resource name='users' list={UserList}/ >
       ]
     }
   </Admin>
