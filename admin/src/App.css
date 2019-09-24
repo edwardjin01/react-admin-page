@@ -6,6 +6,10 @@
   height: 40vmin;
 }
 
+/*.MuiDrawer-docked{*/
+/*  background-color: #2196f3;*/
+/*  min-height: 1vh;*/
+/*}*/
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
