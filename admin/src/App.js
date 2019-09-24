@@ -1,13 +1,17 @@
 import React from 'react';
-import {fetchUtils, Admin, Resource, ListGuesser} from 'react-admin';
+import {Admin, fetchUtils, Resource} from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
-import { authProvider } from './auth';
-import {CoinList, CoinEdit, CoinCreate} from './pages/Coin/coins';
-import {UserList, UserEdit, UserCreate} from "./pages/User/users";
-import { VideoList, VideoEdit, VideoCreate } from './pages/Video/videos';
-import { ReportList, ReportEdit, ReportCreate } from './pages/Report/reports';
+import {authProvider} from './auth';
+import {CoinCreate, CoinEdit, CoinList} from './pages/Coin/coins';
+import {UserCreate, UserEdit, UserList} from "./pages/User/users";
+import {VideoCreate, VideoEdit, VideoList} from './pages/Video/videos';
+import {ReportCreate, ReportEdit, ReportList} from './pages/Report/reports';
 import addUploadCapabilities from './addUploadCapabilities'
 import './App.css';
+import PostIcon from '@material-ui/icons/Book';
+import UserIcon from '@material-ui/icons/Group';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -25,10 +29,12 @@ const App = () => (
   <Admin dataProvider={dataProvider} authProvider={authProvider}>
     {
       permissions => [
-        <Resource name="coins" list={CoinList} edit={permissions === 'Administration' ? CoinEdit : null} create={CoinCreate} />,
-        <Resource name='users' list={UserList} edit={permissions === 'Administration' ? UserEdit : null} create={UserCreate} />,
-        <Resource name='videos' list={VideoList} edit={VideoEdit} create={VideoCreate} />,
-        <Resource name='reports' list={ReportList} edit={ReportEdit} create={ReportCreate} />
+          <Resource name="coins" list={CoinList} edit={permissions === 'Administration' ? CoinEdit : null}
+                    create={CoinCreate} icon={AttachMoneyIcon}/>,
+          <Resource name='users' list={UserList} edit={permissions === 'Administration' ? UserEdit : null}
+                    create={UserCreate} icon={UserIcon}/>,
+          <Resource name='videos' list={VideoList} edit={VideoEdit} create={VideoCreate} icon={VideoLibraryIcon}/>,
+          <Resource name='reports' list={ReportList} edit={ReportEdit} create={ReportCreate} icon={PostIcon}/>
       ]
     }
   </Admin>
