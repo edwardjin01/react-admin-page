@@ -1,19 +1,37 @@
 // in src/users.js
 import React from 'react';
-import {Datagrid, EmailField, List, TextField} from 'react-admin';
-import MyUrlField from "../../components/MyUrlField";
+import { List, Create, Edit, Datagrid, SimpleForm, TextInput, DateTimeInput, TextField, DateField, EmailField } from 'react-admin';
 
 export const UserList = props => (
     <List {...props}>
         <Datagrid rowClick="edit">
             <TextField source="id"/>
-            <TextField source="name"/>
-            <TextField source="username"/>
             <EmailField source="email"/>
-            <TextField source="address.street"/>
+            <TextField source="name"/>
             <TextField source="phone"/>
-            <MyUrlField source="website"/>
-            <TextField source="company.name"/>
+            <DateField source="created_at" showTime />
         </Datagrid>
     </List>
 );
+
+export const UserCreate = props => (
+    <Create {...props}>
+      <SimpleForm>
+        <TextInput source="email" />
+        <TextInput source="name" />
+        <TextInput source="phone" />
+        <DateTimeInput source="created_at"  defaultValue={new Date()} />
+      </SimpleForm>
+    </Create>
+  );
+  
+  export const UserEdit = props => (
+    <Edit {...props}>
+      <SimpleForm>
+        <TextInput source="email" />
+        <TextInput source="name" />
+        <TextInput source="phone" />
+        <DateTimeInput source="created_at"  defaultValue={new Date()} />
+      </SimpleForm>
+    </Edit>
+  )
