@@ -18,9 +18,9 @@ export const VideoList = props => (
     <List {...props}>
         <Datagrid rowClick="edit">
             <TextField source="id"/>
-            <EmailField source="email"/>
-            <TextField source="name"/>
-            <TextField source="phone"/>
+            <TextField source="title"/>
+            <TextField source="description"/>
+            <TextField source="thumbnail_image"/>
             <DateField source="created_at" showTime />
         </Datagrid>
     </List>
@@ -48,10 +48,12 @@ export const VideoCreate = props => (
   export const VideoEdit = props => (
     <Edit {...props}>
       <SimpleForm>
-        <TextInput source="email" />
-        <TextInput source="name" />
-        <TextInput source="phone" />
-        <DateTimeInput source="created_at"  defaultValue={new Date()} />
+      <TextInput source="title" />
+        <TextInput source="description" />
+        <ImageInput source="pictures" label="Thumbnail Image" accept="image/*" multiple>
+          <ImageField source="src" title="title" />
+        </ImageInput>
+        <DateTimeInput source="created_at" defaultValue={new Date()} />
       </SimpleForm>
     </Edit>
   );
