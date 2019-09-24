@@ -16,7 +16,7 @@ app.use('/uploads', express.static('uploads'));
 
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }))
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit:'50mb' }));
 
 app.use(cors({
   exposedHeaders: ['X-Total-Count'],
@@ -33,7 +33,7 @@ app.post('/authenticate', (req, res) => {
   if (username !== 'admin' || password !== '123456') {
     return res.status(401).send('Invalid username or password');
   }
-  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1NjkyOTM0NjgsImV4cCI6MTYwMDgyOTQ2OCwiYXVkIjoid3d3LmNvaW45OC5jb20iLCJzdWIiOiJhZG1pbkBjb2luOTguY29tIiwicm9sZSI6IkFkbWluaXN0cmF0aW9uIn0.7xjxw2V8YWxP96zVz0NDCc75Z0KBGmM9fbsKQ3iMjSQ';
+  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1NjkzMTE3NDYsImV4cCI6MTYwMTQ1MjU0NiwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjoiQWRtaW5pc3RyYXRvciJ9.C2l3nyEAcEdZ_lw9l1Ti5kEYA148O5oxlz9E41XYZ3I';
   return res.json({ token });
 })
 

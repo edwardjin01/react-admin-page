@@ -6,6 +6,7 @@ import {CoinList, CoinEdit, CoinCreate} from './pages/Coin/coins';
 import {UserList, UserEdit, UserCreate} from "./pages/User/users";
 import { VideoCreate } from './pages/Video/videos';
 import { ReportCreate } from './pages/Report/reports';
+import addUploadCapabilities from './addUploadCapabilities'
 import './App.css';
 
 const httpClient = (url, options = {}) => {
@@ -17,7 +18,8 @@ const httpClient = (url, options = {}) => {
   options.headers.set('enctype', 'multipart/form-data');
   return fetchUtils.fetchJson(url, options);
 }
-const dataProvider = jsonServerProvider('http://localhost:8080', httpClient);
+let dataProvider = jsonServerProvider('http://localhost:8080', httpClient);
+dataProvider = addUploadCapabilities(dataProvider);
 
 const App = () => (
   <Admin dataProvider={dataProvider} authProvider={authProvider}>
