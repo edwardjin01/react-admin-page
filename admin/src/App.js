@@ -4,8 +4,8 @@ import jsonServerProvider from 'ra-data-json-server';
 import { authProvider } from './auth';
 import {CoinList, CoinEdit, CoinCreate} from './pages/Coin/coins';
 import {UserList, UserEdit, UserCreate} from "./pages/User/users";
-import { VideoCreate } from './pages/Video/videos';
-import { ReportCreate } from './pages/Report/reports';
+import { VideoList, VideoEdit, VideoCreate } from './pages/Video/videos';
+import { ReportList, ReportEdit, ReportCreate } from './pages/Report/reports';
 import addUploadCapabilities from './addUploadCapabilities'
 import './App.css';
 
@@ -27,8 +27,8 @@ const App = () => (
       permissions => [
         <Resource name="coins" list={CoinList} edit={permissions === 'Administration' ? CoinEdit : null} create={CoinCreate} />,
         <Resource name='users' list={UserList} edit={permissions === 'Administration' ? UserEdit : null} create={UserCreate} />,
-        <Resource name='videos' list={ListGuesser} create={VideoCreate} />,
-        <Resource name='reports' list={ListGuesser} create={ReportCreate} />
+        <Resource name='videos' list={VideoList} edit={VideoEdit} create={VideoCreate} />,
+        <Resource name='reports' list={ReportList} edit={ReportEdit} create={ReportCreate} />
       ]
     }
   </Admin>
