@@ -12,7 +12,7 @@ const App = () => (
   <Admin dataProvider={dataProvider} authProvider={authProvider}>
     {
       permissions => [
-        <Resource name="coins" list={CoinList} edit={permissions === 'admin' ? CoinEdit : null} create={CoinCreate} />,
+        <Resource name="coins" list={CoinList} edit={permissions === 'Administration' ? CoinEdit : null} create={CoinCreate} />,
         // <Resource name='users' list={UserList}/ >
       ]
     }
