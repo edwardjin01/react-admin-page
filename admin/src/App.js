@@ -1,11 +1,11 @@
 import React from 'react';
-import {fetchUtils, Admin, Resource, ListGuesser} from 'react-admin';
+import {Admin, fetchUtils, ListGuesser, Resource} from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
-import { authProvider } from './auth';
-import {CoinList, CoinEdit, CoinCreate} from './pages/Coin/coins';
-import {UserList, UserEdit, UserCreate} from "./pages/User/users";
-import { VideoCreate } from './pages/Video/videos';
-import { ReportCreate } from './pages/Report/reports';
+import {authProvider} from './auth';
+import {CoinCreate, CoinEdit, CoinList} from './pages/Coin/coins';
+import {UserCreate, UserEdit, UserList} from "./pages/User/users";
+import {VideoCreate} from './pages/Video/videos';
+import {ReportCreate} from './pages/Report/reports';
 import addUploadCapabilities from './addUploadCapabilities'
 import './App.css';
 

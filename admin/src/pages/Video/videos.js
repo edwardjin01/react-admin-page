@@ -1,5 +1,18 @@
 import React from 'react';
-import { List, Create, Edit, Datagrid, SimpleForm, TextInput, DateTimeInput, TextField, DateField, EmailField } from 'react-admin';
+import {
+    Create,
+    Datagrid,
+    DateField,
+    DateTimeInput,
+    Edit,
+    EmailField,
+    List,
+    SimpleForm,
+    TextField,
+    TextInput
+} from 'react-admin';
+import Select from 'react-select';
+import {colourOptions} from '../docs/data';
 
 export const VideoList = props => (
     <List {...props}>
@@ -19,6 +32,14 @@ export const VideoCreate = props => (
         <TextInput source="email" />
         <TextInput source="name" />
         <TextInput source="phone" />
+          <Select
+              defaultValue={[colourOptions[2], colourOptions[3]]}
+              isMulti
+              name="colors"
+              options={colourOptions}
+              className="basic-multi-select"
+              classNamePrefix="select"
+          />
         <DateTimeInput source="created_at"  defaultValue={new Date()} />
       </SimpleForm>
     </Create>
@@ -33,4 +54,4 @@ export const VideoCreate = props => (
         <DateTimeInput source="created_at"  defaultValue={new Date()} />
       </SimpleForm>
     </Edit>
-  )
+  );
