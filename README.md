@@ -1,5 +1,5 @@
 # coin98 
-The opensource using react-admin. Login with admin/123456 at link: http://138.197.63.39:3000/
+The opensource using react-admin. Login with admin/123456 at link: http://localhost:3000/
 ### How to start the development
 - Make sure docker-compose.yml match with you enviroment development.
 - Use docker-compose up -d to setup enviroment. To update application remmember to yarn build before docker-compose up -d --build.
