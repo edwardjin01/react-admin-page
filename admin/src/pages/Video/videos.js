@@ -48,6 +48,7 @@ export const VideoCreate = props => (
         <ImageInput source="pictures" label="Thumbnail Image" accept="image/*" multiple>
           <ImageField source="src" title="title" />
         </ImageInput>
+          <CustomReactSelect source="tag"/>
         <DateTimeInput source="created_at" defaultValue={new Date()} />
       </SimpleForm>
     </Edit>
