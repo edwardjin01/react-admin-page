@@ -4,6 +4,7 @@ The opensource using react-admin. Login with admin/123456 at link: http://138.19
 - Make sure docker-compose.yml match with you enviroment development.
 - Use docker-compose up -d to setup enviroment. To update application remmember to yarn build before docker-compose up -d --build.
 - Import database by running the command: psql -h localhost -p 5432 -U postgres mydb < mydb.sql
+- Create uploads folder on workspace.
 ### Modify frontend
 - After run docker-compose up -d, you can go to admin folder and run yarn start to start the development.
 ### Modify backend
