@@ -43,7 +43,7 @@ const httpClient = (url, options = {}) => {
     });
 }
 // let dataProvider = jsonServerProvider('http://138.197.63.39:8080', httpClient);
-let dataProvider = jsonServerProvider('http://localhost:8080', httpClient);
+let dataProvider = jsonServerProvider('http://35.187.243.39:8080', httpClient);
 
 const App = () => (
     // eslint-disable-next-line no-undef
