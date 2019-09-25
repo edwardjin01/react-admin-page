@@ -18,7 +18,7 @@ export const ReportCreate = props => (
     <SimpleForm>
       <TextInput source="name" />
       <LongTextInput source="description" />
-      <ImageInput source="pictures" label="Thumbnail Image" accept="image/*" multiple>
+      <ImageInput source="picture" label="Thumbnail Image" accept="image/*">
         <ImageField source="src" title="title" />
       </ImageInput>
       <FileInput source="path" label="Attachment Files" accept="application/pdf">

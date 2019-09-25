@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'uploads/', limits: { fieldSize: 25 * 1024 * 1024 } });
 
 const client = require('../db');
 
@@ -25,7 +25,7 @@ router.get('/:id', (req, res) => {
   })
 })
 
-router.post('/', upload.fields([{name: 'thumbnail_image', maxCount: 1}, {name: 'path', maxCount: 1}]), (req, res) => {
+router.post('/', upload.single('picture'), (req, res) => {
   const { name,  description  } = req.body;
   const path = 'path';
   const thumbnail_image = 'thumbnail_image';
