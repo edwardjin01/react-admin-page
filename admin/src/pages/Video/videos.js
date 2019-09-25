@@ -12,8 +12,7 @@ import {
     TextField,
     TextInput
 } from 'react-admin';
-import Select from 'react-select';
-import {colourOptions} from '../docs/data';
+import CustomReactSelect from "../../components/CustomReactSelect";
 
 export const VideoList = props => (
     <List {...props}>
@@ -30,17 +29,12 @@ export const VideoList = props => (
 export const VideoCreate = props => (
     <Create {...props}>
       <SimpleForm>
-        <TextInput source="email" />
-        <TextInput source="name" />
-        <TextInput source="phone" />
-          <Select
-              defaultValue={[colourOptions[2], colourOptions[3]]}
-              isMulti
-              name="colors"
-              options={colourOptions}
-              className="basic-multi-select"
-              classNamePrefix="select"
-          />
+          <TextInput source="title"/>
+          <TextInput source="description"/>
+          <ImageInput source="thumbnail_image" label="Thumbnail Image" accept="image/*">
+              <ImageField source="thumbnail_image" title="title"/>
+          </ImageInput>
+          <CustomReactSelect source="tag"/>
         <DateTimeInput source="created_at"  defaultValue={new Date()} />
       </SimpleForm>
     </Create>
