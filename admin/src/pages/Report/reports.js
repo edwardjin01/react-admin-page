@@ -7,7 +7,8 @@ export const ReportList = props => (
       <TextField source="id"/>
       <TextField source="name"/>
       <TextField source="description"/>
-      <TextField source="thumbnail_image"/>
+      <ImageField source="thumbnail_image"/>
+      <FileField source="path" title="path" />
       <DateField source="created_at" showTime />
     </Datagrid>
   </List>
@@ -18,11 +19,11 @@ export const ReportCreate = props => (
     <SimpleForm>
       <TextInput source="name" />
       <LongTextInput source="description" />
-      <ImageInput source="picture" label="Thumbnail Image" accept="image/*">
-        <ImageField source="src" title="title" />
+      <ImageInput source="thumbnail_image" label="Thumbnail Image" accept="image/*">
+        <ImageField source="thumbnail_image" title="title" />
       </ImageInput>
       <FileInput source="path" label="Attachment Files" accept="application/pdf">
-        <FileField source="src" title="title" />
+        <FileField source="path" title="title" />
       </FileInput>
       <DateTimeInput source="created_at"  defaultValue={new Date()} />
     </SimpleForm>
@@ -34,12 +35,8 @@ export const ReportEdit = props => (
     <SimpleForm>
       <TextInput source="name" />
       <LongTextInput source="description" />
-      <ImageInput source="thumbnail_image" label="Thumbnail Image" accept="image/*">
-        <ImageField source="src" title="title" />
-      </ImageInput>
-      <FileInput source="path" label="Attachment Files" accept="application/pdf">
-        <FileField source="src" title="title" />
-      </FileInput>
+      <ImageField source="thumbnail_image" title="thumbnail_image" />      
+      <FileField source="path" title="path" />
       <DateTimeInput source="created_at"  defaultValue={new Date()} />
     </SimpleForm>
   </Edit>

@@ -57,7 +57,12 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 options.method = 'POST';
                 const body = new FormData();
                 Object.keys(params.data).forEach(key => {
-                  body.append(key, params.data[key]);
+                  let value = params.data[key];
+                  if (value.rawFile && value.rawFile instanceof File) {
+                    body.append(key, value.rawFile);
+                  } else {
+                    body.append(key, value);
+                  }
                 })
                 options.body = body;
                 break;

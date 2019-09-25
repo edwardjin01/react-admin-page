@@ -1,7 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/', limits: { fieldSize: 25 * 1024 * 1024 } });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname)
+  }
+})
+const upload = multer({ storage: storage});
 
 const client = require('../db');
 
@@ -25,10 +33,12 @@ router.get('/:id', (req, res) => {
   })
 })
 
-router.post('/', upload.single('picture'), (req, res) => {
+router.post('/', upload.fields([{name: 'thumbnail_image'}, {name: 'path'}]), (req, res) => {
   const { name,  description  } = req.body;
-  const path = 'path';
-  const thumbnail_image = 'thumbnail_image';
+  let { path, thumbnail_image } = req.files;
+  const host = 'http://localhost:8080';
+  path = `${host}/${path[0].path}`;
+  thumbnail_image = `${host}/${thumbnail_image[0].path}`;
   const text = 'INSERT INTO reports(path, name,  description, thumbnail_image) values ($1, $2, $3, $4) RETURNING *';
   const values = [path, name,  description, thumbnail_image];
   client.query(text, values, (error, response) => {
@@ -40,10 +50,10 @@ router.post('/', upload.single('picture'), (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-  const { path, name,  description, thumbnai_image } = req.body;
+  const { name, description } = req.body;
   const { id } = req.params;
-  const text = 'UPDATE reports SET path = $1, name = $2, description = $3, thumbnai_image = $4 WHERE id = $3 RETURNING *';
-  const values = [path, name,  description, thumbnai_image, id];
+  const text = 'UPDATE reports SET name = $1, description = $2 WHERE id = $3 RETURNING *';
+  const values = [name, description, id];
   client.query(text, values, (error, response) => {
     if (error) {
       return res.send(error);
