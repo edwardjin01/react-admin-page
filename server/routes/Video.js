@@ -27,6 +27,10 @@ router.get('/:id', (req, res) => {
 
 router.post('/', upload.single('thumbnail_image'), (req, res) => {
   const { title, description } = req.body;
+  let { thumbnail_image } = req.file;
+  const host = 'http://138.197.63.39:8080/uploads';
+  path = `${host}/${path[0].filename}`;
+  thumbnail_image = `${host}/${thumbnail_image[0].filename}`;
   const text = 'INSERT INTO videos(title, description, created_at) values ($1, $2, $3) RETURNING *';
   const values = [title, description, new Date()];
   client.query(text, values, (error, response) => {

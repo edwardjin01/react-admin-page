@@ -15,13 +15,6 @@ import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import { HttpError } from 'ra-core';
 
 const httpClient = (url, options = {}) => {
-  if (!options.headers) {
-    options.headers = new Headers();
-  }
-  // add your own headers here
-  // options.headers.set('X-Custom-Header', 'foobar');
-  // options.headers.set('Content-Type', undefined);
-  options.headers.set('enctype', 'multipart/form-data');
   return fetch(url, options)
     .then(response => 
       response.text().then(text => ({
@@ -50,7 +43,7 @@ const httpClient = (url, options = {}) => {
       return Promise.resolve({ status, headers, body, json});
     });
 }
-let dataProvider = jsonServerProvider('http://localhost:8080', httpClient);
+let dataProvider = jsonServerProvider('http://138.197.63.39:8080', httpClient);
 
 const App = () => (
   <Admin dataProvider={dataProvider} authProvider={authProvider}>

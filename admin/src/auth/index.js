@@ -4,7 +4,7 @@ import decodeJwt from 'jwt-decode';
 export const authProvider = (type, params) => {
     if (type === AUTH_LOGIN) {
         const { username, password } = params;
-        const request = new Request('http://localhost:8080/authenticate', {
+        const request = new Request('http://138.197.63.39:8080/authenticate', {
             method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: new Headers({ 'Content-Type': 'application/json' }),

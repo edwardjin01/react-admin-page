@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const client = require('../db');
+const multer = require('multer');
+const upload = multer();
 
 router.get('/', (req, res) => {
   client.query('SELECT * FROM COINS', (error, response) => {
@@ -22,7 +24,7 @@ router.get('/:id', (req, res) => {
   })
 })
 
-router.post('/', (req, res) => {
+router.post('/', upload.none(), (req, res) => {
   const { name, symbol } = req.body;
   const text = 'INSERT INTO coins(name, symbol, created_on) values ($1, $2, $3) RETURNING *';
   const values = [name, symbol, new Date()];

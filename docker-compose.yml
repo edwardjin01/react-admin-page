@@ -4,6 +4,8 @@ services:
     build: ./admin
     ports:
       - "3000:80"
+    links:
+      - server:server
   server: 
     build: ./server
     links: 

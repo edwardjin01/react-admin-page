@@ -16,6 +16,10 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
     const convertDataRequestToHTTP = (type, resource, params) => {
         let url = '';
         const options = {};
+        if (!options.headers) {
+            options.headers = new Headers();
+        }
+        options.headers.set('Content-Type', 'application/json');
         switch (type) {
             case GET_LIST: {
                 const { page, perPage } = params.pagination;
@@ -55,6 +59,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
             case CREATE:
                 url = `${apiUrl}/${resource}`;
                 options.method = 'POST';
+                options.headers.delete('Content-Type');
                 const body = new FormData();
                 Object.keys(params.data).forEach(key => {
                   let value = params.data[key];

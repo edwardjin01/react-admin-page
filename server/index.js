@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-// const path = require('path');
+const path = require('path');
 
 const coins = require('./routes/Coin');
 const users = require('./routes/User');
@@ -11,8 +11,8 @@ const reports = require('./routes/Report');
 const app = express();
 const port = 8080;
 
-// app.use(express.static('uploads'));
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+console.log('serving static file at: ', path.join(__dirname, 'uploads'));
 
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }))
 

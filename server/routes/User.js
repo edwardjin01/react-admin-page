@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const client = require('../db');
+const multer = require('multer');
+const upload = multer();
 
 router.get('/', (req, res) => {
   client.query('SELECT * FROM users', (error, response) => {
@@ -22,7 +24,7 @@ router.get('/:id', (req, res) => {
   })
 })
 
-router.post('/', (req, res) => {
+router.post('/', upload.none(), (req, res) => {
   const { email, name, phone } = req.body;
   const text = 'INSERT INTO users(email, name, phone, created_at) values ($1, $2, $3, $4) RETURNING *';
   const values = [email, name, phone, new Date()];
