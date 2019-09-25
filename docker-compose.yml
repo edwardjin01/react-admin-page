@@ -1,5 +1,15 @@
 version: '3'
 services:
+  admin:
+    build: ./admin
+    ports:
+      - "3000:80"
+  server: 
+    build: ./server
+    links: 
+      - postgres:postgres
+    ports:
+      - "8080:8080"
   postgres:
     image: "postgres"
     container_name: "my_postgres"
