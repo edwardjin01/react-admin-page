@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "required": ["title", "description", "embededCode", "likedCount", "unlikedCount", "sharedCount", "tokens", "videoCategories", "userId"],
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "embededCode": {
+      "type": "string"
+    },
+    "unlikedCount": {
+      "type": "number"
+    },
+    "likedCount": {
+      "type": "number"
+    },
+    "sharedCount": {
+      "type": "number"
+    },
+    "tokens": {
+      "type": "string"
+    },
+    "videoCategories": {
+      "type": "number"
+    },
+    "userId": {
+      "type": "number"
+    }
+  }
+}

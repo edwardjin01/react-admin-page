@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const multer = require('multer');
-console.log('saving file at location: ', path.join(__dirname, '../uploads'))
+// console.log('saving file at location: ', path.join(__dirname, '../uploads'))
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, '../uploads'));
@@ -38,8 +38,7 @@ router.get('/:id', (req, res) => {
 router.post('/', upload.fields([{name: 'thumbnail_image'}, {name: 'path'}]), (req, res) => {
   const { name,  description  } = req.body;
   let { path, thumbnail_image } = req.files;
-  const host = 'http://localhost:8080/uploads';
-  path = `${host}/${path[0].filename}`;
+  path = `/uploads/${path[0].filename}`;  
   thumbnail_image = `${host}/${thumbnail_image[0].filename}`;
   const text = 'INSERT INTO reports(path, name,  description, thumbnail_image) values ($1, $2, $3, $4) RETURNING *';
   const values = [path, name,  description, thumbnail_image];

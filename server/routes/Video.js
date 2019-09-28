@@ -1,9 +1,19 @@
 const express = require('express');
+const path = require('path');
 const router = express.Router();
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
-
-const client = require('../db');
+const validator = require('../validator');
+const schema = require('../validator/schema/video');
+const models = require('../models');
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '../uploads'));
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname)
+  }
+})
+const upload = multer({ storage: storage});
 
 router.get('/', (req, res) => {
   client.query('SELECT * FROM videos', (error, response) => {
@@ -25,20 +35,18 @@ router.get('/:id', (req, res) => {
   })
 })
 
-router.post('/', upload.single('thumbnail_image'), (req, res) => {
-  const { title, description } = req.body;
-  let { thumbnail_image } = req.file;
-  const host = 'http://localhost:8080/uploads';
-  path = `${host}/${path[0].filename}`;
-  thumbnail_image = `${host}/${thumbnail_image[0].filename}`;
-  const text = 'INSERT INTO videos(title, description, created_at) values ($1, $2, $3) RETURNING *';
-  const values = [title, description, new Date()];
-  client.query(text, values, (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    return res.json(response.rows[0]);
-  })
+router.post('/', upload.single('thumbnail'), async (req, res) => {
+  const validate = validator.compile(schema);
+  const valid = validate(req.body);
+  if (!valid) {
+    return res.send(validate.errors);
+  }
+  const postTime = req.body.postTime || new Date();
+  const data = {...req.body, thumbnailUri: `/uploads/${req.file.filename}`, postTime};
+  console.log(data);
+  models.Video.create(data, {w: 1}, { returning: true }).then(video => {
+    return res.send(video);
+  });
 })
 
 router.put('/:id', (req, res) => {
