@@ -5,7 +5,7 @@ const multer = require('multer');
 const upload = multer();
 
 router.get('/', (req, res) => {
-  client.query('SELECT * FROM COINS', (error, response) => {
+    client.query('SELECT * FROM TOKENS', (error, response) => {
     if (error) {
       return res.send(error);
     }
@@ -16,8 +16,9 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  client.query('SELECT * FROM COINS WHERE id = $1', [ id ], (error, response) => {
+    client.query('SELECT * FROM TOKENS WHERE id = $1', [id], (error, response) => {
     if (error) {
+        console.log('error', error);
       return res.send(error);
     }
     return res.json(response.rows[0]);
@@ -26,7 +27,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', upload.none(), (req, res) => {
   const { name, symbol } = req.body;
-  const text = 'INSERT INTO coins(name, symbol, created_on) values ($1, $2, $3) RETURNING *';
+    const text = 'INSERT INTO TOKENS(coingeckoTokenId, name, sticker) values ($1, $2, $3) RETURNING *';
   const values = [name, symbol, new Date()];
   client.query(text, values, (error, response) => {
     if (error) {
@@ -37,10 +38,10 @@ router.post('/', upload.none(), (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-  const { name, symbol } = req.body;
+    const {coingeckoTokenId, name, sticker} = req.body;
   const { id } = req.params;
-  const text = 'UPDATE coins SET name = $1, symbol = $2 WHERE id = $3 RETURNING *';
-  const values = [name, symbol, id];
+    const text = 'UPDATE TOKENS SET coingeckoTokenId = $1, name = $2, sticker = $3 WHERE id = $4 RETURNING *';
+    const values = [coingeckoTokenId, name, sticker, id];
   client.query(text, values, (error, response) => {
     if (error) {
       return res.send(error);
@@ -51,7 +52,7 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  const text = 'DELETE FROM coins where id = $1';
+    const text = 'DELETE FROM TOKENS where id = $1';
   const values = [ id ];
   client.query(text, values, (error, response) => {
     if (error) {

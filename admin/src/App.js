@@ -43,19 +43,19 @@ const httpClient = (url, options = {}) => {
     });
 }
 // let dataProvider = jsonServerProvider('http://138.197.63.39:8080', httpClient);
-let dataProvider = jsonServerProvider('http://35.187.243.39:8080', httpClient);
+// let dataProvider = jsonServerProvider('http://35.187.243.39:8080', httpClient);
+let dataProvider = jsonServerProvider('http://localhost:8080', httpClient);
 
 const App = () => (
     // eslint-disable-next-line no-undef
     <Admin dataProvider={dataProvider} authProvider={authProvider}>
     {
       permissions => [
-          <Resource name="coins" list={CoinList} edit={permissions === 'Administration' ? CoinEdit : null}
+          <Resource name="coins" list={CoinList} edit={CoinEdit}
                     create={CoinCreate} icon={AttachMoneyIcon}/>,
+          <Resource name='videos' list={VideoList} edit={VideoEdit} create={VideoCreate} icon={VideoLibraryIcon}/>,
           <Resource name='users' list={UserList} edit={permissions === 'Administration' ? UserEdit : null}
                     create={UserCreate} icon={UserIcon}/>,
-          <Resource name='videos' list={VideoList} edit={VideoEdit} create={VideoCreate} icon={VideoLibraryIcon}/>,
-          <Resource name='reports' list={ReportList} edit={ReportEdit} create={ReportCreate} icon={PostIcon}/>
       ]
     }
   </Admin>

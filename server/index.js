@@ -35,7 +35,7 @@ app.post('/authenticate', (req, res) => {
   }
   const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1NjkzMTE3NDYsImV4cCI6MTYwMTQ1MjU0NiwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjoiQWRtaW5pc3RyYXRvciJ9.C2l3nyEAcEdZ_lw9l1Ti5kEYA148O5oxlz9E41XYZ3I';
   return res.json({ token });
-})
+});
 
 app.use(errorhandler());
 
