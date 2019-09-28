@@ -2,11 +2,12 @@ const Sequelize =  require('sequelize');
 
 const sequelize = new Sequelize(
   'testdb',
-  'nexle-user',
   'postgres',
+    'docker',
   {
     dialect: 'postgres',
-    port: 5432
+      port: 5432,
+      host: '35.187.243.39'
   },
 );
 
