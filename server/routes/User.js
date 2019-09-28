@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
     res.set('x-total-count', response.rows.length);
     return res.json(response.rows);
   })
-})
+});
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
@@ -22,32 +22,32 @@ router.get('/:id', (req, res) => {
     }
     return res.json(response.rows[0]);
   })
-})
+});
 
 router.post('/', upload.none(), (req, res) => {
-  const { email, name, phone } = req.body;
-  const text = 'INSERT INTO users(email, name, phone, created_at) values ($1, $2, $3, $4) RETURNING *';
-  const values = [email, name, phone, new Date()];
+  const {name, phone, invitationCode} = req.body;
+  const text = 'INSERT INTO users(name, phone, invitationCode) values ($1, $2, $3) RETURNING *';
+  const values = [name, phone, invitationCode];
   client.query(text, values, (error, response) => {
     if (error) {
       return res.send(error);
     }
     return res.json(response.rows[0]);
   })
-})
+});
 
 router.put('/:id', (req, res) => {
-  const { email, name, phone } = req.body;
+  const {name, phone, invitationCode} = req.body;
   const { id } = req.params;
-  const text = 'UPDATE users SET email = $1, name = $2, phone = $3 WHERE id = $4 RETURNING *';
-  const values = [email, name, phone, id];
+  const text = 'UPDATE users SET name = $1, phone = $2, invitationCode = $3 WHERE id = $4 RETURNING *';
+  const values = [name, phone, invitationCode, id];
   client.query(text, values, (error, response) => {
     if (error) {
       return res.send(error);
     }
     return res.json(response.rows[0]);
   })
-})
+});
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;

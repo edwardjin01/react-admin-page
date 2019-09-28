@@ -26,16 +26,16 @@ router.get('/:id', (req, res) => {
 })
 
 router.post('/', upload.none(), (req, res) => {
-  const { name, symbol } = req.body;
+    const {coingeckoTokenId, name, sticker} = req.body;
     const text = 'INSERT INTO TOKENS(coingeckoTokenId, name, sticker) values ($1, $2, $3) RETURNING *';
-  const values = [name, symbol, new Date()];
-  client.query(text, values, (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    return res.json(response.rows[0]);
-  })
-})
+    const values = [coingeckoTokenId, name, sticker];
+    client.query(text, values, (error, response) => {
+        if (error) {
+            return res.send(error);
+        }
+        return res.json(response.rows[0]);
+    })
+});
 
 router.put('/:id', (req, res) => {
     const {coingeckoTokenId, name, sticker} = req.body;

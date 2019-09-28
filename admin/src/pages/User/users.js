@@ -6,10 +6,10 @@ export const UserList = props => (
     <List {...props}>
         <Datagrid rowClick="edit">
             <TextField source="id"/>
-            <EmailField source="email"/>
             <TextField source="name"/>
             <TextField source="phone"/>
-            <DateField source="created_at" showTime />
+            <TextField source="invitationCode"/>
+            {/*<DateField source="created_at" showTime />*/}
         </Datagrid>
     </List>
 );
@@ -17,10 +17,9 @@ export const UserList = props => (
 export const UserCreate = props => (
     <Create {...props}>
       <SimpleForm>
-        <TextInput source="email" />
         <TextInput source="name" />
         <TextInput source="phone" />
-        <DateTimeInput source="created_at"  defaultValue={new Date()} />
+        <TextInput source="invitationCode" />
       </SimpleForm>
     </Create>
   );
@@ -28,10 +27,9 @@ export const UserCreate = props => (
   export const UserEdit = props => (
     <Edit {...props}>
       <SimpleForm>
-        <TextInput source="email" />
         <TextInput source="name" />
         <TextInput source="phone" />
-        <DateTimeInput source="created_at"  defaultValue={new Date()} />
+        <TextInput source="invitationCode" />
       </SimpleForm>
     </Edit>
   )
