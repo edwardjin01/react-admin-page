@@ -27,7 +27,7 @@ export const VideoList = props => {
   // description = description && description.length > 20 ? `${description.slice(0, 100)}...` : description;
   // props = {...props, description};
   return (
-    <List {...props}>
+    <List {...props} sort={{field: 'createdAt', order: 'DESC'}}>
         <Datagrid rowClick="edit">
             <TextField source="id"/>
             <TextField source="title"/>
