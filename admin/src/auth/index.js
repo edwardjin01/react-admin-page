@@ -28,7 +28,7 @@ export const authProvider = (type, params) => {
         return Promise.resolve();
     }
     if (type === AUTH_ERROR) {
-        // ...
+        return Promise.resolve();
     }
     if (type === AUTH_CHECK) {
         return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();

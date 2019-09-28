@@ -68,7 +68,7 @@ export const VideoCreate = props => (
           <LongTextInput source="title"/>
           <ImageField source="thumbnailUri" title="thumbnailUri"/>
           <LongTextInput source="description"/>
-          <CustomReactSelect source="tag"/>
+          {/* <CustomReactSelect source="tag"/> */}
           <RichTextInput source="embededCode"/>
           <NumberInput source="likedCount"/>
           <NumberInput source="unlikedCount"/>

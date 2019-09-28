@@ -1,33 +1,4 @@
 {
   "type": "object",
-  "required": ["title", "description", "embededCode", "likedCount", "unlikedCount", "sharedCount", "tokens", "videoCategories", "userId"],
-  "properties": {
-    "title": {
-      "type": "string"
-    },
-    "description": {
-      "type": "string"
-    },
-    "embededCode": {
-      "type": "string"
-    },
-    "unlikedCount": {
-      "type": "string"
-    },
-    "likedCount": {
-      "type": "string"
-    },
-    "sharedCount": {
-      "type": "string"
-    },
-    "tokens": {
-      "type": "string"
-    },
-    "videoCategories": {
-      "type": "string"
-    },
-    "userId": {
-      "type": "string"
-    }
-  }
+  "required": ["title", "description", "embededCode", "likedCount", "unlikedCount", "sharedCount", "userId"]
 }
