@@ -18,7 +18,7 @@ const upload = multer({ storage: storage});
 
 router.get('/', (req, res) => {
   const { _start, _end, _order, _sort } = req.query;
-  models.Video.findAll({ order: [[_sort, _order]] }).then(videos => {
+  models.Video.findAll({ include: [{ model: models.Token}, { model: models.VideoCategory }], order: [[_sort, _order]] }).then(videos => {
     res.set('x-total-count', videos.length);
     res.send(videos);
   }).catch(error => {
@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  models.Video.findAll({ where: { id } }).then((video => res.send(video[0])));
+  models.Video.findAll({ include: [{ model: models.Token}, { model: models.VideoCategory }], where: { id } }).then((video => res.send(video[0])));
 })
 
 router.post('/', upload.single('thumbnail'), async (req, res) => {

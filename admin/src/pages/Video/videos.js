@@ -10,13 +10,17 @@ import {
     List,
     SimpleForm,
     TextField,
-    TextInput,
+    UrlField,
     LongTextInput,
     NumberInput,
-    RichTextField
+    ReferenceArrayInput,
+    SelectArrayInput,
+    ReferenceManyField,
+    SingleFieldList,
+    ChipField,
+    required
 } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
-import CustomReactSelect from "../../components/CustomReactSelect";
 
 export const VideoList = props => {
   // let { description } = props;
@@ -27,16 +31,26 @@ export const VideoList = props => {
         <Datagrid rowClick="edit">
             <TextField source="id"/>
             <TextField source="title"/>
-            <ImageField source="thumbnailUri"/>
+            <UrlField source="thumbnailUri" target="newtab" />
             <TextField 
               source="description" 
               component="p" 
               style={{width: '250px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} />
-            <RichTextField source="embededCode"/>
+            <TextField source="embededCode"/>
             <TextField source="likedCount"/>
             <TextField source="unlikedCount"/>
             <TextField source="sharedCount"/>
             <DateField source="postTime"/>
+            {/* <ReferenceManyField label="Token" reference="coins" target="id">
+                <SingleFieldList>
+                    <ChipField source="name" />
+                </SingleFieldList>
+            </ReferenceManyField>
+            <ReferenceManyField label="Categories" reference="videoCategories" target="id">
+                <SingleFieldList>
+                    <ChipField source="name" />
+                </SingleFieldList>
+            </ReferenceManyField> */}
             <DateField source="createdAt" showTime />
             <DateField source="updatedAt" showTime />
         </Datagrid>
@@ -46,34 +60,46 @@ export const VideoList = props => {
 
 export const VideoCreate = props => (
     <Create {...props}>
-      <SimpleForm>
-          <LongTextInput source="title"/>
-          <ImageInput source="thumnail" label="Thumbnail Image" accept="image/*">
-              <ImageField source="thumbnailUri" title="thumbnailUri"/>
+      <SimpleForm redirect="list">
+          <LongTextInput source="title" validate={required()}/>
+          <ImageInput source="thumbnail" label="Thumbnail Image" accept="image/*">
+              <ImageField source="src" title="thumbnailUri"/>
           </ImageInput>
-          <LongTextInput source="description"/>
-          <CustomReactSelect source="tag"/>
-          <RichTextInput source="embededCode"/>
-          <NumberInput source="likedCount"/>
-          <NumberInput source="unlikedCount"/>
-          <NumberInput source="sharedCount"/>
-          <DateTimeInput source="postTime"/>
+          <LongTextInput source="description" multiline rows={5} validate={required()}/>
+          {/* <CustomReactSelect source="tag"/> */}
+          <RichTextInput source="embededCode" multiline rows={5} validate={required()}/>
+          <NumberInput source="likedCount" defaultValue={0} validate={required()}/>
+          <NumberInput source="unlikedCount" defaultValue={0} validate={required()}/>
+          <NumberInput source="sharedCount" defaultValue={0} validate={required()}/>
+          <ReferenceArrayInput source="tokens" reference="coins">
+            <SelectArrayInput optionText="name" />
+          </ReferenceArrayInput>
+          <ReferenceArrayInput source="videoCategories" reference="videoCategories">
+            <SelectArrayInput optionText="name" />
+          </ReferenceArrayInput>
+          <DateTimeInput source="postTime" defaultValue={new Date()} validate={required()}/>
       </SimpleForm>
     </Create>
   );
   
   export const VideoEdit = props => (
-    <Edit {...props}>
-      <SimpleForm>
-          <LongTextInput source="title"/>
-          <ImageField source="thumbnailUri" title="thumbnailUri"/>
+    <Edit {...props} undoable={false}>
+      <SimpleForm redirect="list">
+          <LongTextInput source="title" validate={required()}/>
+          <UrlField source="thumbnailUri" title="thumbnailUri"/>
           <LongTextInput source="description"/>
           {/* <CustomReactSelect source="tag"/> */}
-          <RichTextInput source="embededCode"/>
-          <NumberInput source="likedCount"/>
-          <NumberInput source="unlikedCount"/>
-          <NumberInput source="sharedCount"/>
-          <DateTimeInput source="postTime"/>
+          <RichTextInput source="embededCode" validate={required()}/>
+          <NumberInput source="likedCount" validate={required()}/>
+          <NumberInput source="unlikedCount" validate={required()}/>
+          <NumberInput source="sharedCount" validate={required()}/>
+          <ReferenceArrayInput label="Tokens" defaultValue={[]} source="tokens" reference="coins">
+            <SelectArrayInput optionText="name" />
+          </ReferenceArrayInput>
+          <ReferenceArrayInput label="Categories" defaultValue={[]} source="videoCategories" reference="videoCategories">
+            <SelectArrayInput optionText="name" />
+          </ReferenceArrayInput>
+          <DateTimeInput source="postTime" validate={required()}/>
           <DateField source="createdAt" showTime/>
           <DateField source="updatedAt" showTime/>
       </SimpleForm>

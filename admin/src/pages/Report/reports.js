@@ -32,7 +32,7 @@ export const ReportList = props => (
 );
 
 export const ReportCreate = props => (
-  <Create {...props}>
+  <Create {...props} redirect="list" undoable={false}>
     <SimpleForm>
       <TextInput source="name" />
       <LongTextInput source="description" />
@@ -49,7 +49,7 @@ export const ReportCreate = props => (
 );
   
 export const ReportEdit = props => (
-  <Edit {...props}>
+  <Edit {...props} redirect="list" undoable={false}>
     <SimpleForm>
       <TextInput source="name" />
       <LongTextInput source="description" />

@@ -7,6 +7,7 @@ const errorhandler = require('errorhandler');
 const coins = require('./routes/Coin');
 const users = require('./routes/User');
 const videos = require('./routes/Video');
+const videoCategories = require('./routes/VideoCategories');
 const reports = require('./routes/Report');
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(cors({
 app.use('/coins', coins);
 app.use('/users', users);
 app.use('/videos', videos);
+app.use('/videoCategories', videoCategories);
 app.use('/reports', reports);
 
 app.post('/authenticate', (req, res) => {

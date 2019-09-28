@@ -12,6 +12,7 @@ import UserIcon from '@material-ui/icons/Group';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import {HttpError} from 'ra-core';
+import { VideoCategoriesList } from './pages/VideoCategories';
 
 const httpClient = (url, options = {}) => {
   return fetch(url, options)
@@ -56,6 +57,7 @@ const App = () => (
           <Resource name='videos' list={VideoList} edit={VideoEdit} create={VideoCreate} icon={VideoLibraryIcon}/>,
           <Resource name='users' list={UserList} edit={permissions === 'Administration' ? UserEdit : null}
                     create={UserCreate} icon={UserIcon}/>,
+          <Resource name='videoCategories' list={VideoCategoriesList} options={{ label: 'Video Categories'}} />
       ]
     }
   </Admin>
