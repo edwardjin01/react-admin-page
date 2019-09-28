@@ -10,32 +10,54 @@ import {
     List,
     SimpleForm,
     TextField,
-    TextInput
+    TextInput,
+    LongTextInput,
+    NumberInput,
+    RichTextField
 } from 'react-admin';
+import RichTextInput from 'ra-input-rich-text';
 import CustomReactSelect from "../../components/CustomReactSelect";
 
-export const VideoList = props => (
+export const VideoList = props => {
+  // let { description } = props;
+  // description = description && description.length > 20 ? `${description.slice(0, 100)}...` : description;
+  // props = {...props, description};
+  return (
     <List {...props}>
         <Datagrid rowClick="edit">
             <TextField source="id"/>
             <TextField source="title"/>
-            <TextField source="description"/>
-            <TextField source="thumbnail_image"/>
-            <DateField source="created_at" showTime />
+            <ImageField source="thumbnailUri"/>
+            <TextField 
+              source="description" 
+              component="p" 
+              style={{width: '250px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} />
+            <RichTextField source="embededCode"/>
+            <TextField source="likedCount"/>
+            <TextField source="unlikedCount"/>
+            <TextField source="sharedCount"/>
+            <DateField source="postTime"/>
+            <DateField source="createdAt" showTime />
+            <DateField source="updatedAt" showTime />
         </Datagrid>
     </List>
-);
+)
+};
 
 export const VideoCreate = props => (
     <Create {...props}>
       <SimpleForm>
-          <TextInput source="title"/>
-          <TextInput source="description"/>
-          <ImageInput source="thumbnail_image" label="Thumbnail Image" accept="image/*">
-              <ImageField source="thumbnail_image" title="title"/>
+          <LongTextInput source="title"/>
+          <ImageInput source="thumnail" label="Thumbnail Image" accept="image/*">
+              <ImageField source="thumbnailUri" title="thumbnailUri"/>
           </ImageInput>
+          <LongTextInput source="description"/>
           <CustomReactSelect source="tag"/>
-        <DateTimeInput source="created_at"  defaultValue={new Date()} />
+          <RichTextInput source="embededCode"/>
+          <NumberInput source="likedCount"/>
+          <NumberInput source="unlikedCount"/>
+          <NumberInput source="sharedCount"/>
+          <DateTimeInput source="postTime"/>
       </SimpleForm>
     </Create>
   );
@@ -43,13 +65,17 @@ export const VideoCreate = props => (
   export const VideoEdit = props => (
     <Edit {...props}>
       <SimpleForm>
-      <TextInput source="title" />
-        <TextInput source="description" />
-        <ImageInput source="pictures" label="Thumbnail Image" accept="image/*" multiple>
-          <ImageField source="src" title="title" />
-        </ImageInput>
+          <LongTextInput source="title"/>
+          <ImageField source="thumbnailUri" title="thumbnailUri"/>
+          <LongTextInput source="description"/>
           <CustomReactSelect source="tag"/>
-        <DateTimeInput source="created_at" defaultValue={new Date()} />
+          <RichTextInput source="embededCode"/>
+          <NumberInput source="likedCount"/>
+          <NumberInput source="unlikedCount"/>
+          <NumberInput source="sharedCount"/>
+          <DateTimeInput source="postTime"/>
+          <DateField source="createdAt" showTime/>
+          <DateField source="updatedAt" showTime/>
       </SimpleForm>
     </Edit>
   );

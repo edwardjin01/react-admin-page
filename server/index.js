@@ -33,7 +33,7 @@ app.post('/authenticate', (req, res) => {
   if (username !== 'admin' || password !== '123456') {
     return res.status(401).send('Invalid username or password');
   }
-  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1NjkzMTE3NDYsImV4cCI6MTYwMTQ1MjU0NiwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjoiQWRtaW5pc3RyYXRvciJ9.C2l3nyEAcEdZ_lw9l1Ti5kEYA148O5oxlz9E41XYZ3I';
+  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE1Njk2ODU1MjUsImV4cCI6MTYwMTIyMTUyNSwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSIsIkdpdmVuTmFtZSI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjoiQWRtaW5pc3RyYXRpb24ifQ.AZvCU-xr8B03uAfeelGrlK6wHQEVZUDYC5uLv6Zidns';
   return res.json({ token });
 });
 

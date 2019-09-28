@@ -17,13 +17,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage});
 
 router.get('/', (req, res) => {
-  client.query('SELECT * FROM videos', (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    res.set('x-total-count', response.rows.length);
-    return res.json(response.rows);
-  })
+  models.Video.findAll().then(videos => {
+    res.set('x-total-count', videos.length);
+    res.send(videos);
+  });
 })
 
 router.get('/:id', (req, res) => {
