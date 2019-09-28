@@ -41,12 +41,12 @@ export const VideoList = props => {
             <TextField source="unlikedCount"/>
             <TextField source="sharedCount"/>
             <DateField source="postTime"/>
-            {/* <ReferenceManyField label="Token" reference="coins" target="id">
+            <ReferenceManyField label="Token" reference="coins" target="id">
                 <SingleFieldList>
                     <ChipField source="name" />
                 </SingleFieldList>
             </ReferenceManyField>
-            <ReferenceManyField label="Categories" reference="videoCategories" target="id">
+            {/* <ReferenceManyField label="Categories" reference="videoCategories" target="id">
                 <SingleFieldList>
                     <ChipField source="name" />
                 </SingleFieldList>
@@ -71,10 +71,10 @@ export const VideoCreate = props => (
           <NumberInput source="likedCount" defaultValue={0} validate={required()}/>
           <NumberInput source="unlikedCount" defaultValue={0} validate={required()}/>
           <NumberInput source="sharedCount" defaultValue={0} validate={required()}/>
-          <ReferenceArrayInput source="tokens" reference="coins">
+          <ReferenceArrayInput label="Tokens" source="tokens" reference="coins">
             <SelectArrayInput optionText="name" />
           </ReferenceArrayInput>
-          <ReferenceArrayInput source="videoCategories" reference="videoCategories">
+          <ReferenceArrayInput label="Categories" source="videoCategories" reference="videoCategories">
             <SelectArrayInput optionText="name" />
           </ReferenceArrayInput>
           <DateTimeInput source="postTime" defaultValue={new Date()} validate={required()}/>
@@ -93,10 +93,10 @@ export const VideoCreate = props => (
           <NumberInput source="likedCount" validate={required()}/>
           <NumberInput source="unlikedCount" validate={required()}/>
           <NumberInput source="sharedCount" validate={required()}/>
-          <ReferenceArrayInput label="Tokens" defaultValue={[]} source="tokens" reference="coins">
+          <ReferenceArrayInput label="Tokens" source="tokens" reference="coins">
             <SelectArrayInput optionText="name" />
           </ReferenceArrayInput>
-          <ReferenceArrayInput label="Categories" defaultValue={[]} source="videoCategories" reference="videoCategories">
+          <ReferenceArrayInput label="Categories"  source="videoCategories" reference="videoCategories">
             <SelectArrayInput optionText="name" />
           </ReferenceArrayInput>
           <DateTimeInput source="postTime" validate={required()}/>

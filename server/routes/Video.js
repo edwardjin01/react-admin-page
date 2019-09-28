@@ -28,7 +28,14 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  models.Video.findAll({ include: [{ model: models.Token}, { model: models.VideoCategory }], where: { id } }).then((video => res.send(video[0])));
+  models.Video.findAll({ include: [{ model: models.Token, through: { attributes: [] }}, { model: models.VideoCategory, through: { attributes: [] }}], where: { id } })
+    .then((videos => {
+      let video = videos[0];
+      video.tokens = video.tokens.map(token => token.id);
+      video.videoCategories = video.videoCategories.map(token => token.id);
+      return res.send(video);
+    }))
+    .catch(error => res.send(error));
 })
 
 router.post('/', upload.single('thumbnail'), async (req, res) => {
@@ -37,13 +44,18 @@ router.post('/', upload.single('thumbnail'), async (req, res) => {
   if (!valid) {
     return res.send(validate.errors);
   }
-  const postTime = req.body.postTime || new Date();
   const embededCode = decode(req.body.embededCode);
-  const data = {...req.body, thumbnailUri: `http://localhost:8080/uploads/${req.file.filename}`, embededCode, postTime};
-  console.log(data);
-  models.Video.create(data, {w: 1}, { returning: true }).then(video => {
-    return res.send(video);
-  });
+  const tokens = req.body.tokens.split(',');
+  const videoCategories = req.body.videoCategories.split(',');
+  const data = {
+    ...req.body, 
+    thumbnailUri: `http://localhost:8080/uploads/${req.file ? req.file.filename : 'thumbnail.png'}`,
+    embededCode,
+  };
+  models.Video.create(data)
+  .then(video => Promise.all([video.setTokens(tokens), video.setVideoCategories(videoCategories)]))
+  .then(videoTokens => res.send(video))
+  .catch(error => res.send(error));
 })
 
 router.put('/:id', (req, res) => {
@@ -54,9 +66,20 @@ router.put('/:id', (req, res) => {
   }
   const { id } = req.params;
   const embededCode = decode(req.body.embededCode);
-  models.Video.update({...req.body, embededCode}, {where: { id }, returning: true, plain: true })
-    .then(() => models.Video.findAll({where: { id }}))
-    .then((video => res.send(video[0])));
+  const { tokens, videoCategories } = req.body;
+  models.Video.update({...req.body, embededCode}, { where: { id }, returning: true })
+    .then(video => {
+      if (video && video.length > 1) {
+        const updated = video[1][0];
+        return Promise.all([updated.setTokens(tokens), updated.setVideoCategories(videoCategories)])
+      }
+      return res.send({});
+    })    
+    .then((videoTokens) => models.Video.findAll({where: { id }}))
+    .then((video => res.send(video[0])))
+    .catch(error => {
+      return res.send(error)
+    });
 })
 
 router.delete('/:id', (req, res) => {
