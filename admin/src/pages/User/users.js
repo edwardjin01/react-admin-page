@@ -9,7 +9,8 @@ export const UserList = props => (
             <TextField source="name"/>
             <TextField source="phone"/>
             <TextField source="invitationCode"/>
-            {/*<DateField source="created_at" showTime />*/}
+            <DateField source="createdAt" showTime/>
+          <DateField source="updatedAt" showTime/>
         </Datagrid>
     </List>
 );
@@ -30,6 +31,8 @@ export const UserCreate = props => (
         <TextInput source="name"  validate={required()}/>
         <TextInput source="phone" validate={regex(/^0(\d{9})$/, 'Must be valid phone number')} />        
         <TextInput source="invitationCode" validate={required()} />
+        <DateField source="createdAt" showTime/>
+          <DateField source="updatedAt" showTime/>
       </SimpleForm>
     </Edit>
   )
