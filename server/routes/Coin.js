@@ -1,64 +1,55 @@
 const express = require('express');
 const router = express.Router();
-const client = require('../db');
 const multer = require('multer');
-const upload = multer();
+const upload = multer({});
+const models = require('../models');
+const validator = require('../validator');
+const schema = require('../validator/schema/coin');
 
 router.get('/', (req, res) => {
-    client.query('SELECT * FROM TOKENS', (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    res.set('x-total-count', response.rows.length);
-    return res.json(response.rows);
-  })
+  const { _start, _end, _order, _sort } = req.query;
+  models.Token.findAll({ order: [[_sort, _order]] }).then(tokens => {
+    res.set('x-total-count', tokens.length);
+    res.send(tokens);
+  }).catch(error => {
+    res.send(error);
+  });
 })
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-    client.query('SELECT * FROM TOKENS WHERE id = $1', [id], (error, response) => {
-    if (error) {
-        console.log('error', error);
-      return res.send(error);
-    }
-    return res.json(response.rows[0]);
-  })
+  models.Token.findAll({ where: { id } })
+    .then((token => res.send(token[0])))
+    .catch(error => res.send(error));
 })
 
 router.post('/', upload.none(), (req, res) => {
-    const {coingeckoTokenId, name, sticker} = req.body;
-    const text = 'INSERT INTO TOKENS(coingeckoTokenId, name, sticker) values ($1, $2, $3) RETURNING *';
-    const values = [coingeckoTokenId, name, sticker];
-    client.query(text, values, (error, response) => {
-        if (error) {
-            return res.send(error);
-        }
-        return res.json(response.rows[0]);
-    })
-});
+  const validate = validator.compile(schema);
+  const valid = validate(req.body);
+  if (!valid) {
+    return res.send(validate.errors);
+  }
+  models.Token.create(req.body, {w: 1}, { returning: true })
+  .then(token => res.send(token))
+  .catch(error => res.send(error));
+})
 
 router.put('/:id', (req, res) => {
-    const {coingeckoTokenId, name, sticker} = req.body;
+  const validate = validator.compile(schema);
+  const valid = validate(req.body);
+  if (!valid) {
+    return res.send(validate.errors);
+  }
   const { id } = req.params;
-    const text = 'UPDATE TOKENS SET coingeckoTokenId = $1, name = $2, sticker = $3 WHERE id = $4 RETURNING *';
-    const values = [coingeckoTokenId, name, sticker, id];
-  client.query(text, values, (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    return res.json(response.rows[0]);
-  })
+  models.Token.update(req.body, {where: { id }, returning: true, plain: true })
+    .then(() => models.Token.findAll({where: { id }}))
+    .then((token => res.send(token[0])));
 })
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-    const text = 'DELETE FROM TOKENS where id = $1';
-  const values = [ id ];
-  client.query(text, values, (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    return res.json({rowCount: response.rowCount});    
+  models.Token.destroy({ where: { id } }).then(() => {
+    return res.send({});
   })
 });
 
