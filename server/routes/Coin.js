@@ -5,10 +5,16 @@ const upload = multer({});
 const models = require('../models');
 const validator = require('../validator');
 const schema = require('../validator/schema/coin');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 router.get('/', (req, res) => {
   const { _start, _end, _order, _sort } = req.query;
-  models.Token.findAll({ order: [[_sort, _order]] }).then(tokens => {
+  const { id } = req.query;
+  let query = {};
+  query = id ? { ...query, where: { id: {[Op.in]: [+id] }}} : query;
+  query = _sort && _order ? {...query, order: [[_sort, _order]]} : query;
+  models.Token.findAll(query).then(tokens => {
     res.set('x-total-count', tokens.length);
     res.send(tokens);
   }).catch(error => {
