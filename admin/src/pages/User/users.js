@@ -1,6 +1,6 @@
 // in src/users.js
 import React from 'react';
-import { List, Create, Edit, Datagrid, SimpleForm, TextInput, DateTimeInput, TextField, DateField, EmailField } from 'react-admin';
+import { List, Create, Edit, Datagrid, SimpleForm, TextInput, DateTimeInput, TextField, DateField, EmailField, required, regex} from 'react-admin';
 
 export const UserList = props => (
     <List {...props}>
@@ -17,9 +17,9 @@ export const UserList = props => (
 export const UserCreate = props => (
     <Create {...props}>
       <SimpleForm>
-        <TextInput source="name" />
-        <TextInput source="phone" />
-        <TextInput source="invitationCode" />
+        <TextInput source="name" validate={required()} />
+        <TextInput source="phone" validate={regex(/^0(\d{9})$/, 'Must be valid phone number')} />
+        <TextInput source="invitationCode" validate={required()} />
       </SimpleForm>
     </Create>
   );
@@ -27,9 +27,9 @@ export const UserCreate = props => (
   export const UserEdit = props => (
     <Edit {...props}>
       <SimpleForm>
-        <TextInput source="name" />
-        <TextInput source="phone" />
-        <TextInput source="invitationCode" />
+        <TextInput source="name"  validate={required()}/>
+        <TextInput source="phone" validate={regex(/^0(\d{9})$/, 'Must be valid phone number')} />        
+        <TextInput source="invitationCode" validate={required()} />
       </SimpleForm>
     </Edit>
   )

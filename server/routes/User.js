@@ -1,64 +1,42 @@
 const express = require('express');
 const router = express.Router();
-const client = require('../db');
 const multer = require('multer');
+const models = require('../models');
 const upload = multer();
 
 router.get('/', (req, res) => {
-  client.query('SELECT * FROM users', (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    res.set('x-total-count', response.rows.length);
-    return res.json(response.rows);
-  })
+  const { _start, _end, _order, _sort } = req.query;
+  models.User.findAll({ order: [[_sort, _order]] }).then(users => {
+    res.set('x-total-count', users.length);
+    res.send(users);
+  }).catch(error => {
+    res.send(error);
+  });
 });
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  client.query('SELECT * FROM users WHERE id = $1', [ id ], (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    return res.json(response.rows[0]);
-  })
+  models.User.findAll({ where: { id } }).then((user => res.send(user[0]))).catch(error => res.send(error));
 });
 
-router.post('/', upload.none(), (req, res) => {
-  const {name, phone, invitationCode} = req.body;
-  const text = 'INSERT INTO users(name, phone, invitationCode) values ($1, $2, $3) RETURNING *';
-  const values = [name, phone, invitationCode];
-  client.query(text, values, (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    return res.json(response.rows[0]);
-  })
+router.post('/',upload.none(),  (req, res) => {
+  models.User.create(req.body, {w: 1}, { returning: true }).then(user => {
+    return res.send(user);
+  }).catch(error => res.send(error));;
 });
 
 router.put('/:id', (req, res) => {
-  const {name, phone, invitationCode} = req.body;
   const { id } = req.params;
-  const text = 'UPDATE users SET name = $1, phone = $2, invitationCode = $3 WHERE id = $4 RETURNING *';
-  const values = [name, phone, invitationCode, id];
-  client.query(text, values, (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    return res.json(response.rows[0]);
-  })
+  models.User.update(req.body, {where: { id }, returning: true, plain: true })
+    .then(() => models.User.findAll({where: { id }}))
+    .then((user => res.send(user[0])));
 });
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  const text = 'DELETE FROM users where id = $1';
-  const values = [ id ];
-  client.query(text, values, (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    return res.json({rowCount: response.rowCount});    
-  })
+  models.User.destroy({ where: { id } }).then(() => {
+    return res.send({});
+  }).catch(error => res.send(error));
 });
 
 module.exports = router;

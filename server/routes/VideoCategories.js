@@ -14,13 +14,13 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  models.VideoCategory.findAll({ where: { id } }).then((category => res.send(category[0])));
+  models.VideoCategory.findAll({ where: { id } }).then((category => res.send(category[0]))).catch(error => res.send(error));
 });
 
 router.post('/', (req, res) => {
   models.VideoCategory.create(req.body, {w: 1}, { returning: true }).then(category => {
     return res.send(category);
-  });
+  }).catch(error => res.send(error));;
 });
 
 router.put('/:id', (req, res) => {
@@ -34,7 +34,7 @@ router.delete('/:id', (req, res) => {
   const { id } = req.params;
   models.VideoCategory.destroy({ where: { id } }).then(() => {
     return res.send({});
-  })
+  }).catch(error => res.send(error));
 });
 
 module.exports = router;
