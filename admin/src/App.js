@@ -55,9 +55,10 @@ const App = () => (
           <Resource name="coins" list={CoinList} edit={CoinEdit}
                     create={CoinCreate} icon={AttachMoneyIcon}/>,
           <Resource name='videos' list={VideoList} edit={VideoEdit} create={VideoCreate} icon={VideoLibraryIcon}/>,
+          <Resource name='videoCategories' list={VideoCategoriesList} options={{ label: 'Video Categories'}} />,
+          <Resource name='reports' list={ReportList} edit={ReportEdit} create={ReportCreate} icon={PostIcon}/>,
           <Resource name='users' list={UserList} edit={permissions === 'Administration' ? UserEdit : null}
-                    create={UserCreate} icon={UserIcon}/>,
-          <Resource name='videoCategories' list={VideoCategoriesList} options={{ label: 'Video Categories'}} />
+        create={UserCreate} icon={UserIcon}/>,
       ]
     }
   </Admin>

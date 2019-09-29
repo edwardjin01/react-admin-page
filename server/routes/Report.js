@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const multer = require('multer');
+const validator = require('../validator');
+const schema = require('../validator/schema/video');
+const models = require('../models');
 // console.log('saving file at location: ', path.join(__dirname, '../uploads'))
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -10,68 +13,63 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(null, file.originalname)
   }
-})
+});
+
+
 const upload = multer({ storage: storage});
 
 const client = require('../db');
 
 router.get('/', (req, res) => {
-  client.query('SELECT * FROM reports', (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    res.set('x-total-count', response.rows.length);
-    return res.json(response.rows);
-  })
-})
+  const {_start, _end, _order, _sort} = req.query;
+  // models.Report.findAll({include: [{model: models.Token}],order: [[_sort, _order]] }).then(reports => {
+  models.Report.findAll({order: [[_sort, _order]]}).then(reports => {
+    res.set('x-total-count', reports.length);
+    res.send(reports);
+  }).catch(error => {
+    res.send(error);
+  });
+});
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  client.query('SELECT * FROM reports WHERE id = $1', [ id ], (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    return res.json(response.rows[0]);
-  })
-})
+  models.Video.findAll({where: {id}})
+      .then((reports => {
+        let report = reports[0];
+        return res.send(report);
+      }))
+      .catch(error => res.send(error));
+});
 
-router.post('/', upload.fields([{name: 'thumbnail_image'}, {name: 'path'}]), (req, res) => {
-  const { name,  description  } = req.body;
-  let { path, thumbnail_image } = req.files;
-  path = `/uploads/${path[0].filename}`;  
-  thumbnail_image = `${host}/${thumbnail_image[0].filename}`;
-  const text = 'INSERT INTO reports(path, name,  description, thumbnail_image) values ($1, $2, $3, $4) RETURNING *';
-  const values = [path, name,  description, thumbnail_image];
-  client.query(text, values, (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    return res.json(response.rows[0]);
-  })
-})
+router.post('/', upload.single('thumbnailUri'), upload.single('reportUri'), async (req, res) => {
 
-router.put('/:id', (req, res) => {
-  const { name, description } = req.body;
+  const data = {
+    ...req.body,
+    thumbnailUri: `http://localhost:8080/uploads/${req.file ? req.file.filename : 'thumbnail.png'}`,
+    reportUri: `http://localhost:8080/uploads/${req.file ? req.file.filename : '_doc.png'}`,
+  };
+  models.Report.create(data).then(report => res.send(report)).catch(error => {
+    return res.send(error)
+  });
+});
+
+router.put('/:id', upload.single('thumbnailUri'), async (req, res) => {
   const { id } = req.params;
-  const text = 'UPDATE reports SET name = $1, description = $2 WHERE id = $3 RETURNING *';
-  const values = [name, description, id];
-  client.query(text, values, (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    return res.json(response.rows[0]);
-  })
-})
+  const data = {
+    ...req.body,
+    thumbnailUri: `http://localhost:8080/uploads/${req.file ? req.file.filename : 'thumbnail.png'}`,
+  };
+  models.Report.update({data}, {where: {id}, returning: true})
+      .then(report => res.send(report))
+      .catch(error => {
+        return res.send(error)
+      });
+});
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  const text = 'DELETE FROM reports where id = $1';
-  const values = [ id ];
-  client.query(text, values, (error, response) => {
-    if (error) {
-      return res.send(error);
-    }
-    return res.json({rowCount: response.rowCount});    
+  models.Report.destroy({where: {id}}).then(() => {
+    return res.send({});
   })
 });
 
