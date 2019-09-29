@@ -55,6 +55,9 @@ export const ReportEdit = props => (
       <TextInput source="title" />
       <ImageField source="thumbnailUri" title="thumbnailUri Image" />
       <FileField source="thumbnailUri" title="path" />
+      {/*<ImageInput source="thumbnailUri" label="thumbnailUri Image" accept="image/*">*/}
+      {/*  <ImageField source="thumbnailUri" title="title" />*/}
+      {/*</ImageInput>*/}
       <LongTextInput source="description" />
       <FileInput source="reportUri" label="reportUri" accept="application/*">
         <FileField source="reportUri" title="reportUri" />

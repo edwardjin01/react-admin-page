@@ -41,23 +41,32 @@ router.get('/:id', (req, res) => {
       .catch(error => res.send(error));
 });
 
-router.post('/', upload.single('thumbnailUri'), upload.single('reportUri'), async (req, res) => {
+router.post('/', upload.fields([{
+  name: 'thumbnailUri', maxCount: 1
+}, {
+  name: 'reportUri', maxCount: 1
+}]), async (req, res) => {
 
   const data = {
     ...req.body,
-    thumbnailUri: `http://localhost:8080/uploads/${req.file ? req.file.filename : 'thumbnail.png'}`,
-    reportUri: `http://localhost:8080/uploads/${req.file ? req.file.filename : '_doc.png'}`,
+    thumbnailUri: `http://localhost:8080/uploads/${req.files ? req.files.thumbnailUri[0].filename : 'thumbnail.png'}`,
+    reportUri: `http://localhost:8080/uploads/${req.files ? req.files.reportUri[0].filename : '_doc.png'}`,
   };
   models.Report.create(data).then(report => res.send(report)).catch(error => {
     return res.send(error)
   });
 });
 
-router.put('/:id', upload.single('thumbnailUri'), async (req, res) => {
-  const { id } = req.params;
+router.put('/:id', upload.fields([{
+  name: 'thumbnailUri', maxCount: 1
+}, {
+  name: 'reportUri', maxCount: 1
+}]), async (req, res) => {
+  const {id} = req.params;
   const data = {
     ...req.body,
-    thumbnailUri: `http://localhost:8080/uploads/${req.file ? req.file.filename : 'thumbnail.png'}`,
+    thumbnailUri: `http://localhost:8080/uploads/${req.files ? req.files.thumbnailUri[0].filename : 'thumbnail.png'}`,
+    reportUri: `http://localhost:8080/uploads/${req.files ? req.files.reportUri[0].filename : '_doc.png'}`,
   };
   models.Report.update({data}, {where: {id}, returning: true})
       .then(report => res.send(report))
